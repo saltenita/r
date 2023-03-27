@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Redireccion a traves de Firebase Realtime Database</title>
+  <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.1/firebase-database.js"></script>
+</head>
+<body>
+  <h1>Redirección a través de Firebase Realtime Database</h1>
+</body>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyCRQATwUfHIXGqt-VPgbmfHlfA-R1_F_DY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    databaseURL: "https://imagen2-5515a-default-rtdb.firebaseio.com/",
+    projectId: "imagen2-5515a",
+    storageBucket: "redirecciones",
+    messagingSenderId: "344502917819",
+    appId: "1:344502917819:web:1aca1fa7f2aa5018d3e79e"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  var database = firebase.database();
+
+  var redireccion = obtenerParametroURL("r");
+  var ref = database.ref("redirecciones/" + redireccion);
+
+  ref.once("value")
+    .then(function(snapshot) {
+      var data = snapshot.val();
+      if (data) {
+        window.location.replace(data);
+      } else {
+        console.log("La redirección especificada no existe");
+      }
+    });
+
+  function obtenerParametroURL(parametro) {
+    var urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(parametro);
+  }
+</script>
+</html>
